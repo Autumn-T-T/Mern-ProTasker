@@ -1,0 +1,101 @@
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+export default function Dashboard() {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [projects, setProjects] = useState([]);
+  const [name, setName] = useState("");
+
+  // Fetch projects
+  const fetchProjects = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/projects", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setProjects(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Create project
+  const handleCreateProject = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:5000/api/projects",
+        { name },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      setName("");
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Delete project
+  const handleDeleteProject = async (projectId) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) return;
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/projects/${projectId}`,
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  return (
+    <div className="dashboard-container">
+      <h1>Welcome, {user?.name}!</h1>
+      <button onClick={logout}>Logout</button>
+
+      <h2>Create Project</h2>
+      <form onSubmit={handleCreateProject} className="project-form">
+        <input
+          type="text"
+          placeholder="Project Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <button type="submit">Add Project</button>
+      </form>
+
+      <h2>Your Projects</h2>
+      {projects.length === 0 ? (
+        <p>No projects yet</p>
+      ) : (
+        <ul className="project-list">
+          {projects.map((project) => (
+            <li key={project._id} className="project-card">
+              <span
+                onClick={() => navigate(`/projects/${project._id}`)}
+                className="project-name"
+              >
+                {project.name}
+              </span>
+              <button
+                onClick={() => handleDeleteProject(project._id)}
+                className="delete-button"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

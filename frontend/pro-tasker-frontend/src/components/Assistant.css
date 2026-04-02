@@ -1,0 +1,46 @@
+/* ---------- Assistant Container ---------- */
+.assistant-container {
+  position: fixed;
+  bottom: 20px; /* distance from bottom */
+  right: 20px;  /* distance from right */
+  width: 250px; /* GIF width */
+  height: auto; 
+  z-index: 1000; /* above everything */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* clicks pass through GIF */
+}
+
+/* ---------- Assistant GIF ---------- */
+.assistant-gif {
+  width: 100%;
+  height: auto;
+  pointer-events: auto; /* allow interaction with tip box if needed */
+  display: block;
+}
+
+/* ---------- Tip Box ---------- */
+.assistant-tip {
+  position: absolute; /* float above GIF without moving it */
+  bottom: 110%; /* just above GIF */
+  left: 50%;
+  transform: translate(-50%, 10px);
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #7a3a50;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(214, 123, 137, 0.4);
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
+  pointer-events: auto;
+  white-space: nowrap; /* prevent line wrap */
+  max-width: 300px;
+}
+
+.assistant-tip.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

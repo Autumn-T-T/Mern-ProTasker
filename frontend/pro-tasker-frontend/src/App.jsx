@@ -7,6 +7,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProjectDetails from "./pages/ProjectDetails";
 
+// Import the assistant component
+import Assistant from "./components/Assistant"; 
+
 export default function App() {
   const { user } = useContext(AuthContext);
 
@@ -29,7 +32,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* Routes */}
+      {/* Main Routes */}
       <Routes>
         <Route
           path="/"
@@ -52,6 +55,9 @@ export default function App() {
           element={user ? <ProjectDetails /> : <Navigate to="/login" />}
         />
       </Routes>
+
+      {/* Assistant */}
+      <Assistant />
     </>
   );
 }

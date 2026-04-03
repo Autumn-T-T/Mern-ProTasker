@@ -1,31 +1,38 @@
-// frontend/src/context/AuthContext.jsx
 import { createContext, useState } from "react";
-import axios from "axios";
 
 export const AuthContext = createContext();
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("protaskerUser");
-    return saved ? JSON.parse(saved) : null;
-  });
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const register = async (name, email, password) => {
     setLoading(true);
     setError(null);
+
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/register",
-        { name, email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      setUser(res.data);
-      localStorage.setItem("protaskerUser", JSON.stringify(res.data));
-      return res.data;
+      const res = await fetch(`${API_URL}/api/users/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Registration failed");
+        throw new Error(data.message);
+      }
+
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.message);
       throw err;
     } finally {
       setLoading(false);
@@ -35,30 +42,35 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     setError(null);
+
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/login",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      setUser(res.data);
-      localStorage.setItem("protaskerUser", JSON.stringify(res.data));
-      return res.data;
+      const res = await fetch(`${API_URL}/api/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        throw new Error(data.message);
+      }
+
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.message);
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("protaskerUser");
-  };
-
   return (
-    <AuthContext.Provider value={{ user, loading, error, register, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, register, login, error, loading }}>
       {children}
     </AuthContext.Provider>
   );

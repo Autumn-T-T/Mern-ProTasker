@@ -1,4 +1,3 @@
-// frontend/src/pages/Register.jsx
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -19,28 +18,47 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="dashboard-container">
       <h2>Register</h2>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit" disabled={loading}>Register</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </form>
+
+      <p>
+        Already have an account?{" "}
+        <span
+          style={{ color: "#D67B89", cursor: "pointer" }}
+          onClick={() => navigate("/login")}
+        >
+          Login here
+        </span>
+      </p>
+    </div>
   );
 }

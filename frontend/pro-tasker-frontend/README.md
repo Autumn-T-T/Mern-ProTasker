@@ -1,16 +1,52 @@
-# React + Vite
+Pro-Tasker
+Description
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pro-Tasker is a full-stack task management application built with the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, log in, create projects, add tasks, and manage their workflow efficiently. The app also features a fun assistant character and interactive UI elements.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Live URLs
+Backend Web Service: https://mern-protasker.onrender.com
+Frontend Static Site: https://mern-protasker-frontend.onrender.com
+Features
+User registration and login with authentication
+Create, view, and manage projects
+Add, update, and complete tasks within projects
+Responsive dashboard and project detail pages
+Animated assistant for interactive guidance
+Installation & Running Locally
+Backend
+Clone the repo:
+git clone https://github.com/Autumn-T-T/Mern-ProTasker.git
+Go to the backend folder:
+cd Mern-ProTasker/backend
+Install dependencies:
+npm install
+Set up a .env file with:
+MONGO_URI=your_mongodb_connection_string
+PORT=5000
+Start the backend:
+npm run dev
+Frontend
+Go to the frontend folder:
+cd ../frontend/pro-tasker-frontend
+Install dependencies:
+npm install
+Set up a .env file with:
+VITE_API_URL=http://localhost:5000
+Start the frontend:
+npm run dev
+API Endpoints
+Users
+POST /api/users/register – Register a new user
+POST /api/users/login – Log in an existing user
+GET /api/users/me – Get current logged-in user details
+Projects
+GET /api/projects – List all projects for the user
+POST /api/projects – Create a new project
+GET /api/projects/:projectId – Get details of a specific project
+PUT /api/projects/:projectId – Update a project
+DELETE /api/projects/:projectId – Delete a project
+Tasks
+GET /api/projects/:projectId/tasks – List all tasks for a project
+POST /api/projects/:projectId/tasks – Add a new task
+PUT /api/projects/:projectId/tasks/:taskId – Update a task
+DELETE /api/projects/:projectId/tasks/:taskId – Delete a task

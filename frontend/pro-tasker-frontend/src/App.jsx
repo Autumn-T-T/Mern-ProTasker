@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProjectDetails from "./pages/ProjectDetails";
-
 import Assistant from "./components/Assistant";
 
 export default function App() {
@@ -14,7 +13,6 @@ export default function App() {
 
   return (
     <>
-      {/* Floating Hearts */}
       <div className="heart-container">
         {Array.from({ length: 10 }).map((_, i) => (
           <span
@@ -31,7 +29,6 @@ export default function App() {
         ))}
       </div>
 
-      {/* Routes */}
       <Routes>
         <Route
           path="/"
@@ -59,7 +56,6 @@ export default function App() {
         />
       </Routes>
 
-      {/* Assistant stays outside routes so it's always visible */}
       <Assistant />
     </>
   );

@@ -1,4 +1,3 @@
-// frontend/src/pages/ProjectDetails.jsx
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -15,60 +14,68 @@ export default function ProjectDetails() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/projects/${projectId}/tasks`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      const res = await axios.get(`/api/projects/${projectId}/tasks`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setTasks(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Fetch tasks error:", err.response?.data || err.message);
     }
   };
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
+
     try {
       await axios.post(
-        `http://localhost:5000/api/projects/${projectId}/tasks`,
+        `/api/projects/${projectId}/tasks`,
         { title, description },
-        { headers: { Authorization: `Bearer ${user.token}` } }
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
       );
+
       setTitle("");
       setDescription("");
       fetchTasks();
     } catch (err) {
-      console.error(err);
+      console.error("Create task error:", err.response?.data || err.message);
     }
   };
 
   const updateStatus = async (taskId, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/projects/${projectId}/tasks/${taskId}`,
+        `/api/projects/${projectId}/tasks/${taskId}`,
         { status },
-        { headers: { Authorization: `Bearer ${user.token}` } }
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
       );
+
       fetchTasks();
     } catch (err) {
-      console.error(err);
+      console.error("Update task error:", err.response?.data || err.message);
     }
   };
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/projects/${projectId}/tasks/${taskId}`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      await axios.delete(`/api/projects/${projectId}/tasks/${taskId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+
       fetchTasks();
     } catch (err) {
-      console.error(err);
+      console.error("Delete task error:", err.response?.data || err.message);
     }
   };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (user?.token) {
+      fetchTasks();
+    }
+  }, [user, projectId]);
 
   return (
     <div style={{ padding: "2rem" }}>

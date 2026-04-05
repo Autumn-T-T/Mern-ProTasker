@@ -10,51 +10,55 @@ export default function Dashboard() {
   const [projects, setProjects] = useState([]);
   const [name, setName] = useState("");
 
-  // Fetch projects
   const fetchProjects = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/projects", {
+      const res = await axios.get("/api/projects", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setProjects(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Fetch projects error:", err.response?.data || err.message);
     }
   };
 
-  // Create project
   const handleCreateProject = async (e) => {
     e.preventDefault();
+
     try {
       await axios.post(
-        "http://localhost:5000/api/projects",
+        "/api/projects",
         { name },
-        { headers: { Authorization: `Bearer ${user.token}` } }
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
       );
+
       setName("");
       fetchProjects();
     } catch (err) {
-      console.error(err);
+      console.error("Create project error:", err.response?.data || err.message);
     }
   };
 
-  // Delete project
   const handleDeleteProject = async (projectId) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
+
     try {
-      await axios.delete(
-        `http://localhost:5000/api/projects/${projectId}`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      await axios.delete(`/api/projects/${projectId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+
       fetchProjects();
     } catch (err) {
-      console.error(err);
+      console.error("Delete project error:", err.response?.data || err.message);
     }
   };
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    if (user?.token) {
+      fetchProjects();
+    }
+  }, [user]);
 
   return (
     <div className="dashboard-container">

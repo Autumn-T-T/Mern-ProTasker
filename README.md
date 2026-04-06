@@ -1,7 +1,5 @@
-Pro-Tasker
-Description
 
-Pro-Tasker is a full-stack task management application built with the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, log in, create projects, add tasks, and manage their workflow efficiently. The app also features a fun assistant character and interactive UI elements.
+Pro-Tasker is a full-stack task management application built with the MERN stack (MongoDB, Express, React, Node.js). It allows users to register, log in, create projects, add tasks, and manage their workflow efficiently. The app also features a cute little pink character in the corner that occassionally gives you tips every once in a while
 
 Live URLs
 Backend Web Service: https://mern-protasker.onrender.com
